@@ -295,7 +295,7 @@ export function setupFirstRun(ctx: Ctx, requestId: string, input: SetupInput) {
       outletId, input.outlet.name.trim(), input.outlet.gstin ?? null, input.outlet.fssaiNo ?? null, input.outlet.stateCode, input.outlet.address ?? null, input.outlet.phone ?? null, now);
     run(ctx.db, 'INSERT INTO device(id, outlet_id, name, series_prefix, created_at) VALUES (?,?,?,?,?)', deviceId, outletId, input.device.name, input.device.seriesPrefix, now);
     run(ctx.db, 'INSERT INTO app_user(id, name, role, mobile, pin_hash, created_at, updated_at) VALUES (?,?,?,?,?,?,?)', ownerId, input.owner.name.trim(), 'owner', ownerMobile, hashPin(input.owner.pin, ctx.scryptCost), now, now);
-    for (const [name, bp] of [['GST 0%', 0], ['GST 5%', 500], ['GST 12%', 1200], ['GST 18%', 1800]] as const) {
+    for (const [name, bp] of [['GST 0%', 0], ['GST 5%', 500], ['GST 18%', 1800], ['GST 40%', 4000]] as const) { // GST 2.0 slabs from 22 Sep 2025 (Notf 9/2025-CT(Rate)); a shop adds 3%, 0.25% or cess groups as it needs
       run(ctx.db, 'INSERT INTO tax_group(id, name, rate_bp, cess_bp, price_includes_tax, updated_at) VALUES (?,?,?,?,1,?)', ctx.ids.next(), name, bp, 0, now);
     }
     setSetting(ctx, 'device_id', deviceId);
